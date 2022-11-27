@@ -5,6 +5,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/pelletier/go-toml/v2"
@@ -65,7 +66,7 @@ func initConfig() {
 
 func authMiddleware(c *gin.Context) {
 	token := c.Request.Header.Get("Authorization")
-	if token != conf.Server.Token {
+	if token != conf.Server.Token && !strings.Contains(c.Request.URL.Path, "static") {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, nil)
 		return
 	}
