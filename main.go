@@ -28,7 +28,7 @@ func main() {
 	gin.SetMode(conf.Server.Mode)
 	router := gin.New()
 	router.Use(authMiddleware)
-	router.Static("/static", conf.Server.StoragePath)
+	router.Static("/static", path.Join(executeDir, conf.Server.StoragePath))
 	router.POST("/upload", upload)
 	router.DELETE("/delete/:name", delete)
 	if conf.Server.IsHttps {
