@@ -8,7 +8,7 @@
     mode          = "release"
     port          = ":3002"
     token         = ""
-    storagePath   = "../images"
+    storagePath   = "../files"
     isHttps       = false
     returnBaseUrl = "https://lvboda.cn/"
 ```
