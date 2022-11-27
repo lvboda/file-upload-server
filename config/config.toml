@@ -1,0 +1,7 @@
+[server]
+    mode          = "debug"
+    port          = ":3002"
+    token         = ""
+    storagePath   = "../images"
+    isHttps       = false
+    returnBaseUrl = "https://lvboda.cn/"
