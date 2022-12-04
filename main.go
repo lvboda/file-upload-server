@@ -32,6 +32,7 @@ func main() {
 	router.Static("/static", path.Join(executeDir, conf.Server.StoragePath))
 	router.POST("/upload", upload)
 	router.DELETE("/delete/:name", delete)
+	router.GET("/all", getAll)
 	if conf.Server.IsHttps {
 		certFilePath := path.Join(executeDir, "../config/tls.pem")
 		keyFilePath := path.Join(executeDir, "../config/tls.key")
@@ -103,5 +104,26 @@ func delete(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
 		"data": "ok",
+	})
+}
+
+func getAll(c *gin.Context) {
+	files, err := os.ReadDir(path.Join(executeDir, conf.Server.StoragePath))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, nil)
+		return
+	}
+	var res []map[string]string
+	for _, file := range files {
+		if !file.IsDir() {
+			res = append(res, map[string]string{
+				"url":  conf.Server.ReturnBaseUrl + file.Name(),
+				"name": file.Name(),
+			})
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"data": res,
 	})
 }
